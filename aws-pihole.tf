@@ -114,6 +114,7 @@ resource "aws_instance" "pihole" {
               newgrp docker
               wget https://raw.githubusercontent.com/pheistman/dockerpihole/master/docker-compose.yml
               docker-compose up -d
+              docker restart docker_portainer_1 # fixes weird issue with portainer timed out message on GUI
               EOF
 }
 
