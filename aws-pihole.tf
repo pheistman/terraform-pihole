@@ -106,12 +106,12 @@ resource "aws_instance" "pihole" {
               cd /home/ec2-user
               yum update
               yum install -y docker python3-pip && pip3 install docker-compose
-              newgrp docker
               systemctl enable docker.service
               systemctl start docker.service
               mkdir -p /home/ec2-user/scripts/docker
               cd /home/ec2-user/scripts/docker
               usermod -a -G docker ec2-user
+              newgrp docker
               wget https://raw.githubusercontent.com/pheistman/dockerpihole/master/docker-compose.yml
               docker-compose up -d
               EOF
@@ -133,7 +133,7 @@ resource "aws_security_group" "pihole-sg" {
     from_port   = 53
     to_port     = 53
     protocol    = "tcp"
-    cidr_blocks = ["84.65.64.66/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -141,7 +141,7 @@ resource "aws_security_group" "pihole-sg" {
     from_port   = 53
     to_port     = 53
     protocol    = "udp"
-    cidr_blocks = ["84.65.64.66/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -149,7 +149,7 @@ resource "aws_security_group" "pihole-sg" {
     from_port   = 9443
     to_port     = 9443
     protocol    = "tcp"
-    cidr_blocks = ["84.65.64.66/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   
   ingress {
@@ -157,7 +157,7 @@ resource "aws_security_group" "pihole-sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["84.65.64.66/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
