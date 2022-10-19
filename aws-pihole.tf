@@ -104,6 +104,9 @@ resource "aws_instance" "pihole" {
   user_data = <<-EOF
               #!/bin/bash
               cd /home/ec2-user
+              wget https://raw.githubusercontent.com/pheistman/awssecupdate/master/ec2-awssecupdate.sh
+              chmod +x /home/ec2-user/ec2-awssecupdate.sh
+              chown ec2-user: /home/ec2-user/ec2-awssecupdate.sh
               yum update
               yum install -y docker python3-pip && pip3 install docker-compose
               systemctl enable docker.service
