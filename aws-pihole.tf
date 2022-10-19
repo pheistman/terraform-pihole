@@ -109,8 +109,8 @@ resource "aws_instance" "pihole" {
               newgrp docker
               systemctl enable docker.service
               systemctl start docker.service
-              mkdir -p /home/ec2-user/scripts/docker
-              cd /home/ec2-user/scripts/docker
+              mkdir -p /home/ec2-user/docker
+              cd /home/ec2-user/docker
               usermod -a -G docker ec2-user
               wget https://raw.githubusercontent.com/pheistman/dockerpihole/master/docker-compose.yml
               docker-compose up -d
@@ -127,39 +127,7 @@ resource "aws_security_group" "pihole-sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  ingress {
-    description = "TCP DNS resolution from home IP only"
-    from_port   = 53
-    to_port     = 53
-    protocol    = "tcp"
-    cidr_blocks = ["84.65.64.66/32"]
-  }
-
-  ingress {
-    description = "UDP DNS resolution from home IP only"
-    from_port   = 53
-    to_port     = 53
-    protocol    = "udp"
-    cidr_blocks = ["84.65.64.66/32"]
-  }
-
-  ingress {
-    description = "portainer-container-gui"
-    from_port   = 9443
-    to_port     = 9443
-    protocol    = "tcp"
-    cidr_blocks = ["84.65.64.66/32"]
-  }
   
-  ingress {
-    description = "Allow all traffic to port 80"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["84.65.64.66/32"]
-  }
-
   egress {
     from_port        = 0
     to_port          = 0
