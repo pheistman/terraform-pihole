@@ -106,14 +106,15 @@ resource "aws_instance" "pihole" {
               cd /home/ec2-user
               yum update
               yum install -y docker python3-pip && pip3 install docker-compose
-              newgrp docker
               systemctl enable docker.service
               systemctl start docker.service
               mkdir -p /home/ec2-user/docker
               cd /home/ec2-user/docker
               usermod -a -G docker ec2-user
+              newgrp docker
               wget https://raw.githubusercontent.com/pheistman/dockerpihole/master/docker-compose.yml
               docker-compose up -d
+              docker restart docker_portainer_1 # fixes weird issue with portainer timed out message on GUI
               EOF
 }
 
